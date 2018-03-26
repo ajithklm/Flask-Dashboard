@@ -1,6 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="dashboard">
-    <h1>My dashboard page</h1>
-</div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var encodedJSON = {{ result|tojson|safe }}; 
+
+            $('#table').bootstrapTable({
+                //Assigning data to table
+                data: encodedJSON
+            });
+        });
+    </script>
+    <form id="form1" runat="server">
+        <table id="table">
+            <thead>
+                <tr>
+                    <th data-field="@Name">Name</th>
+                    <th data-field="@ABP">BPrc</th>
+                    <th data-field="@ASP">SPrc</th>
+                    <th data-field="@SN">Number</th>
+                    <th data-field="@Gn">GN</th>
+                    <th data-field="@GnP">GN%</th>
+                    <th data-field="@SDate">SDate</th>
+                </tr>
+            </thead>
+        </table>
+    </form>
 {% endblock %}
