@@ -1,28 +1,87 @@
 {% extends "layout.html" %}
 {% block content %}
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(function () {   
             var encodedJSON = {{ result|tojson|safe }}; 
+            function filterJsonData()
+            {
+                //Filter rows based on selected year
+                var filterJSON=$(encodedJSON).filter(
+                function (i,n){
+                    var date=n.SDate;
+                    if($('#selectnumber').val()=='ALL')
+                        return date.length===date.length //return all rows
+                    else
+                        return date.substr(date.length-4, date.length)===$('#selectnumber').val() //return rows contains selected year
+                });
+
+                //Calculating and displaying total gain
+                var totalGn = 0;
+                $(filterJSON).each(function(i){
+                totalGn = totalGn+ parseInt(filterJSON[i].Gn);
+                });
+                document.querySelector('.totalGn').innerHTML = totalGn;
+
+                return filterJSON;    
+            }
+            
 
             $('#table').bootstrapTable({
                 //Assigning data to table
-                data: encodedJSON
+                data: filterJsonData()
             });
+
+            $('#selectnumber').change(function(){
+                //Clear table data
+                $('#table').bootstrapTable("destroy");
+                $('#table').bootstrapTable({
+                    //Assigning data to table
+                    data: filterJsonData()
+                });
+            })
         });
     </script>
     <form id="form1" runat="server">
-        <table id="table">
+        <div class="headingStyle">
+        <label for = "year">Select Year:
+        <select id="selectnumber">
+            <option value="ALL">ALL</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+        </select>
+        </div>
+        <table id="table" class="table table-striped">
             <thead>
                 <tr>
-                    <th data-field="@Name">Name</th>
-                    <th data-field="@ABP">BPrc</th>
-                    <th data-field="@ASP">SPrc</th>
-                    <th data-field="@SN">Number</th>
-                    <th data-field="@Gn">GN</th>
-                    <th data-field="@GnP">GN%</th>
-                    <th data-field="@SDate">SDate</th>
+                    <th data-field="Name">Name</th>
+                    <th data-field="ABP">BPrc</th>
+                    <th data-field="ASP">SPrc</th>
+                    <th data-field="SN">Number</th>
+                    <th data-field="Gn">GN</th>
+                    <th data-field="GnP">GN%</th>
+                    <th data-field="SDate">SDate</th>
                 </tr>
             </thead>
+            <tfoot>
+                <tr>
+                   <td></td>
+                   <td></td>
+                   <td></td>
+                   <td></td>
+                   <th>Total Gn: <span class="totalGn"></span></th>
+                </tr>
+            </tfoot>
         </table>
     </form>
 {% endblock %}
