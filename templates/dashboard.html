@@ -9,10 +9,10 @@
                 var filterJSON=$(encodedJSON).filter(
                 function (i,n){
                     var date=n.SDate;
-                    if($('#selectnumber').val()=='ALL')
+                    if($('#selectYear').val()=='ALL')
                         return date.length===date.length //return all rows
                     else
-                        return date.substr(date.length-4, date.length)===$('#selectnumber').val() //return rows contains selected year
+                        return date.substr(date.length-4, date.length)===$('#selectYear').val() //return rows contains selected year
                 });
 
                 //Calculating and displaying total gain
@@ -31,7 +31,7 @@
                 data: filterJsonData()
             });
 
-            $('#selectnumber').change(function(){
+            $('#selectYear').change(function(){
                 //Clear table data
                 $('#table').bootstrapTable("destroy");
                 $('#table').bootstrapTable({
@@ -44,7 +44,7 @@
     <form id="form1" runat="server">
         <div class="headingStyle">
         <label for = "year">Select Year:
-        <select id="selectnumber">
+        <select id="selectYear">
             <option value="ALL">ALL</option>
             <option value="2013">2013</option>
             <option value="2014">2014</option>
@@ -80,6 +80,8 @@
                    <td></td>
                    <td></td>
                    <th>Total Gn: <span class="totalGn"></span></th>
+                   <td></td>
+                   <td></td>
                 </tr>
             </tfoot>
         </table>
