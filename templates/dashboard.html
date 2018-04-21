@@ -10,7 +10,7 @@
                 function (i,n){
                     var date=n.SDate;
                     if($('#selectYear').val()=='ALL')
-                        return date.length===date.length //return all rows
+                        return true; //return all rows
                     else
                         return date.substr(date.length-4, date.length)===$('#selectYear').val() //return rows contains selected year
                 });
